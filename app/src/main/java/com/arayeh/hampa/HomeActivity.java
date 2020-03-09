@@ -1,18 +1,32 @@
 package com.arayeh.hampa;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import com.arayeh.hampa.fragments.community.CommunityListFragment;
 import com.arayeh.hampa.fragments.profile.ProfileFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends AppCompatActivity {
-
+private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
+        bottomNavigationView=findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId()==R.id.community){
+                    loadCommunityFragment();
+                }
+                return false;
+            }
+        });
         loadProfileFragment();
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -34,6 +48,15 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadProfileFragment(){
         ProfileFragment myf=new ProfileFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //  transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        transaction.replace(R.id.fragment, myf);
+        transaction.addToBackStack("Pregnancy");
+        //  transaction.disallowAddToBackStack();
+        transaction.commit();
+    }
+    private void loadCommunityFragment(){
+        CommunityListFragment myf=new CommunityListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //  transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         transaction.replace(R.id.fragment, myf);
